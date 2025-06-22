@@ -3,5 +3,5 @@
 
 [页面](https://pleb631.github.io/prompt_viewer/)
 
-![intro](./asset/image.png)
+![intro](./asset/im.jpg)
 
