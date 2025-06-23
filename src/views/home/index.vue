@@ -75,9 +75,38 @@ function cancel() {
 </script>
 
 <template>
-    <el-container>
-        <el-main class="main">
-            <el-card style="width: 100%; height: 100%">
+    <div class="responsive-layout">
+        <!-- aside 放在上方，小屏时显示为顶部 -->
+        <el-card class="aside-card">
+            <div class="my-2 group">
+                <el-radio-group v-model="group_name">
+                    <el-radio-button
+                        v-for="cat in group_names"
+                        :key="cat"
+                        :value="cat"
+                        @change="changeGroup(cat)"
+                    >
+                        {{ cat }}
+                    </el-radio-button>
+                </el-radio-group>
+            </div>
+            <div class="my-2 group">
+                <el-radio-group v-model="sub_group_name">
+                    <el-radio-button
+                        v-for="cat in sub_group_names"
+                        :key="cat"
+                        :value="cat"
+                        @change="changeSubGroup(cat)"
+                    >
+                        {{ cat }}
+                    </el-radio-button>
+                </el-radio-group>
+            </div>
+        </el-card>
+
+        <!-- 主内容区域 -->
+        <el-card class="main-card">
+            <div class="toolbar">
                 <el-switch
                     v-model="watch_img"
                     active-text="Open"
@@ -89,53 +118,28 @@ function cancel() {
                     :max="6"
                     :step="1"
                     show-input
-                    style="width: 300px; margin-bottom: 20px"
+                    style="max-width: 300px; margin: 10px 0"
+                />
+            </div>
+
+            <el-row :gutter="20">
+                <el-col
+                    v-for="(item, index) in sub_group.tags"
+                    :key="index"
+                    :xs="24"
+                    :sm="Math.min(24, Math.ceil(24 / columns))"
+                    :md="Math.ceil(24 / columns)"
                 >
-                </el-slider>
-                <el-row :gutter="20">
-                    <el-col
-                        :span="Math.ceil(24 / columns)"
-                        v-for="(item, index) in sub_group.tags"
-                        :key="index"
-                    >
-                        <Card
-                            :img_info="item"
-                            :base_url="base_url + 'small/'"
-                            :display-img="watch_img"
-                            :show_img="showImg"
-                        ></Card>
-                    </el-col>
-                </el-row> </el-card
-        ></el-main>
-        <el-aside class="right">
-            ><el-card style="width: 100%; height: 100%">
-                <div class="my-2 ml-4 group">
-                    <el-radio-group v-model="group_name">
-                        <el-radio-button
-                            v-for="cat in group_names"
-                            :key="cat"
-                            :value="cat"
-                            @change="changeGroup(cat)"
-                        >
-                            {{ cat }}
-                        </el-radio-button>
-                    </el-radio-group>
-                </div>
-                <div class="my-2 ml-4 group">
-                    <el-radio-group v-model="sub_group_name">
-                        <el-radio-button
-                            v-for="cat in sub_group_names"
-                            :key="cat"
-                            :value="cat"
-                            @change="changeSubGroup(cat)"
-                        >
-                            {{ cat }}
-                        </el-radio-button>
-                    </el-radio-group>
-                </div>
-            </el-card></el-aside
-        >
-    </el-container>
+                    <Card
+                        :img_info="item"
+                        :base_url="base_url + 'small/'"
+                        :display-img="watch_img"
+                        :show_img="showImg"
+                    />
+                </el-col>
+            </el-row>
+        </el-card>
+    </div>
 
     <el-dialog
         v-model="imgViewerVisible"
@@ -143,42 +147,36 @@ function cancel() {
         @closed="cancel"
     >
         <img
-            :src="
-                base_url +
-                'regular/' +
-                img_info.img_url +
-                '?t=' +
-                Date.now()
-            "
+            :src="base_url + 'regular/' + img_info.img_url + '?t=' + Date.now()"
             style="width: 100%"
         />
     </el-dialog>
 </template>
 
 <style scoped lang="scss">
-.main {
-    padding: 20px;
-    background-color: #f5f5f5;
+.responsive-layout {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    gap: 20px;
     height: 100vh;
-    width: 80vw;
-    .el-card {
-        overflow: auto;
-    }
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
-.right {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: #f5f5f5;
-    width: 20vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: auto;
+
+/* 卡片全宽高填满容器 */
+.aside-card {
+    flex: 0 0 auto; /* 不强制拉伸 */
+    width: 260px; /* 默认宽度 */
+    max-width: 300px; /* 最大宽度限制 */
+    overflow-y: auto;
+}
+
+.main-card {
+    flex: 1 1 auto; /* 占满剩余空间 */
+    min-width: 0; /* 避免溢出 */
+    overflow-y: auto;
+
 }
 
 .group {
@@ -186,5 +184,28 @@ function cancel() {
     border: 1px solid black;
     margin-bottom: 0.5rem;
     overflow: auto;
+    box-sizing: border-box;
+}
+
+/* 小屏幕时切换为上下布局 */
+@media (max-width: 768px) {
+    .responsive-layout {
+        flex-direction: column;
+        height: auto;
+        box-sizing: border-box;
+    }
+
+    .aside-card {
+        width: 100vw;
+        flex-basis: auto;
+        flex: unset;
+        max-width: unset;
+    }
+
+    .main-card {
+        overflow: visible;
+        height: auto;
+        box-sizing: border-box;
+    }
 }
 </style>

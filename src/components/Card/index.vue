@@ -26,7 +26,7 @@ function copyToClipboard(text: string) {
     <el-card>
         <div class="header">{{ img_info.name }}</div>
         <img
-            v-if="displayImg"
+            v-if="displayImg && img_info.img_url"
             v-lazy="base_url + img_info.img_url"
             style="width: 100%"
             @click="show_img(img_info)"
@@ -46,6 +46,7 @@ function copyToClipboard(text: string) {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
 }
 .header {
     font-size: 1rem;
