@@ -76,7 +76,6 @@ function cancel() {
 
 <template>
     <div class="responsive-layout">
-        <!-- aside 放在上方，小屏时显示为顶部 -->
         <el-card class="aside-card">
             <div class="my-2 group">
                 <el-radio-group v-model="group_name">
@@ -104,13 +103,12 @@ function cancel() {
             </div>
         </el-card>
 
-        <!-- 主内容区域 -->
         <el-card class="main-card">
             <div class="toolbar">
                 <el-switch
                     v-model="watch_img"
-                    active-text="Open"
-                    inactive-text="Close"
+                    active-text="查看图片"
+
                 />
                 <el-slider
                     v-model="columns"
@@ -164,17 +162,19 @@ function cancel() {
     overflow: hidden;
 }
 
-/* 卡片全宽高填满容器 */
+
 .aside-card {
-    flex: 0 0 auto; /* 不强制拉伸 */
-    width: 260px; /* 默认宽度 */
-    max-width: 300px; /* 最大宽度限制 */
+    flex: 0 0 auto; 
+    width: 25vw; 
+    max-width: 300px; 
+    min-width: 100px; 
     overflow-y: auto;
+    box-sizing: content-box;
 }
 
 .main-card {
-    flex: 1 1 auto; /* 占满剩余空间 */
-    min-width: 0; /* 避免溢出 */
+    flex: 1 1 auto; 
+    min-width: 0; 
     overflow-y: auto;
 
 }
@@ -187,7 +187,7 @@ function cancel() {
     box-sizing: border-box;
 }
 
-/* 小屏幕时切换为上下布局 */
+
 @media (max-width: 768px) {
     .responsive-layout {
         flex-direction: column;
@@ -206,6 +206,9 @@ function cancel() {
         overflow: visible;
         height: auto;
         box-sizing: border-box;
+    }
+    .toolbar{
+        display: none;
     }
 }
 </style>

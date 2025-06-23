@@ -32,7 +32,11 @@ function copyToClipboard(text: string) {
             @click="show_img(img_info)"
         />
         <template #footer
-            ><el-button @click="copyToClipboard(img_info.tag)">
+            ><el-button
+                class="btn"
+                @click="copyToClipboard(img_info.tag)"
+                :title="img_info.tag"
+            >
                 {{ img_info.tag }}
             </el-button>
         </template>
@@ -46,7 +50,6 @@ function copyToClipboard(text: string) {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-
 }
 .header {
     font-size: 1rem;
@@ -55,7 +58,7 @@ function copyToClipboard(text: string) {
     text-align: center;
 }
 
-img{
+img {
     cursor: pointer;
     transition: transform 0.2s;
 }
