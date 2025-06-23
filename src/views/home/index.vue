@@ -7,7 +7,7 @@ import { useRouter } from "vue-router";
 const $router = useRouter();
 
 const columns = ref(4);
-const watch_img = ref(true);
+const watch_img = ref(false);
 
 const datas = ref<GroupProp>({});
 
@@ -112,12 +112,13 @@ function cancel() {
         </el-card>
 
         <el-card class="main-card">
-            <div class="toolbar">
+            <div>
                 <el-switch
                     v-model="watch_img"
                     active-text="查看图片"
                 />
                 <el-slider
+                    class="toolbar"
                     v-model="columns"
                     :min="1"
                     :max="6"
