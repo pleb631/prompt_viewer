@@ -2,6 +2,9 @@
 import Card from "@/components/Card/index.vue";
 import { type ImageInfo, Group, GroupProp } from "@/components/Card/types.ts";
 import { ref, onMounted } from "vue";
+import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+const $router = useRouter();
 
 const columns = ref(4);
 const watch_img = ref(true);
@@ -43,8 +46,13 @@ function changeSubGroup(cat: string) {
 }
 
 onMounted(async () => {
-    const res = await fetch(`${base_url}prompt_tags.json`);
-    datas.value = await res.json();
+    try {
+        const res = await fetch(`${base_url}prompt_tags.json`);
+        datas.value = await res.json();
+    } catch (error) {
+        ElMessage.error("下载数据失败，请稍后重试");
+        $router.push({ path: "/404" });
+    }
 
     group_names.value = datas.value.map((item: GroupProp) => item.name);
     group_name.value = group_names.value[0];
@@ -108,7 +116,6 @@ function cancel() {
                 <el-switch
                     v-model="watch_img"
                     active-text="查看图片"
-
                 />
                 <el-slider
                     v-model="columns"
@@ -162,21 +169,19 @@ function cancel() {
     overflow: hidden;
 }
 
-
 .aside-card {
-    flex: 0 0 auto; 
-    width: 25vw; 
-    max-width: 300px; 
-    min-width: 100px; 
+    flex: 0 0 auto;
+    width: 25vw;
+    max-width: 300px;
+    min-width: 100px;
     overflow-y: auto;
     box-sizing: content-box;
 }
 
 .main-card {
-    flex: 1 1 auto; 
-    min-width: 0; 
+    flex: 1 1 auto;
+    min-width: 0;
     overflow-y: auto;
-
 }
 
 .group {
@@ -186,7 +191,6 @@ function cancel() {
     overflow: auto;
     box-sizing: border-box;
 }
-
 
 @media (max-width: 768px) {
     .responsive-layout {
@@ -207,7 +211,7 @@ function cancel() {
         height: auto;
         box-sizing: border-box;
     }
-    .toolbar{
+    .toolbar {
         display: none;
     }
 }
