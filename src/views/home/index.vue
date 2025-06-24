@@ -80,6 +80,12 @@ function showImg(item: ImageInfo) {
 function cancel() {
     imgViewerVisible.value = false;
 }
+
+const isMobile = ref(false)
+
+onMounted(() => {
+  isMobile.value = window.innerWidth <= 768 
+})
 </script>
 
 <template>
@@ -151,6 +157,7 @@ function cancel() {
         v-model="imgViewerVisible"
         title="高清预览"
         @closed="cancel"
+        :width="isMobile ? '95%' : ''"
     >
         <img
             :src="base_url + 'regular/' + img_info.img_url + '?t=' + Date.now()"
