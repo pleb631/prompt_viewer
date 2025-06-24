@@ -11,7 +11,7 @@ const watch_img = ref(false);
 
 const datas = ref<GroupProp>({});
 
-const base_url = "https://huggingface.co/datasets/pleb631/prompt/resolve/main/";
+const base_url = import.meta.env.VITE_APP_BASE_API;
 const group_names = ref<string[]>([]);
 const group_name = ref("");
 const group = ref<GroupProp>({
@@ -152,7 +152,7 @@ onMounted(() => {
             </el-row>
         </el-card>
     </div>
-
+    
     <el-dialog
         v-model="imgViewerVisible"
         title="高清预览"

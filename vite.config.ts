@@ -3,11 +3,13 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+import { loadEnv } from "vite";
 import path from "path";
 // https://vite.dev/config/
-export default () => {
+export default ({ mode }) => {
+    const env = loadEnv(mode, process.cwd());
     return {
-        base: "/prompt_viewer/",
+        base: env.VITE_URL,
         plugins: [
             vue(),
             AutoImport({
